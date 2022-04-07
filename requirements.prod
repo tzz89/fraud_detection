@@ -1,0 +1,11 @@
+umap-learn
+numpy
+pandas
+notebook
+scikit-learn
+lightgbm
+wandb
+gdown
+pyyaml
+matplotlib
+python-dotenv

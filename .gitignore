@@ -1,0 +1,7 @@
+data/*
+models/*
+venv
+.ipynb_checkpoints
+__pycache__
+.env
+wandb

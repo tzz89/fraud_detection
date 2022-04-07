@@ -1,0 +1,35 @@
+data_url : "https://drive.google.com/uc?id=1zTLGDZ2N6uGP0nTLX0JPXEaJq-1h2SwT"
+data_folder: "data"
+
+wandb_params:
+  project_name: "fraud_detection"
+  entity: "zuozhe"
+
+
+training_params:
+  n_folds: 5
+  n_jobs: -1
+
+
+models:
+  LGBMClassifier:
+    n_estimators: [500, 700, 1000]
+    learning_rate: [0.01]
+    objective: ["binary"]
+    metric: ['average_precision']
+    is_unbalance: [True]
+  RandomForestClassifier:
+    n_estimators: [100, 125]
+  LogisticRegression:
+    penalty: ['l2']
+    C: [0.8,1.0,1.2]
+    fit_intercept: [True, False]
+  LinearSVC:
+    penalty: ['l2']
+    C: [0.8,1.0,1.2]
+    fit_intercept: [True, False]
+  
+
+metrics:
+  optimizing_metric: test_average_precision # AUC under PR curve
+  tracking_metrics: ["average_precision", "f1", "precision", "recall", "roc_auc", "accuracy"]
