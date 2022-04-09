@@ -1,5 +1,5 @@
 umap-learn
-numpy
+numpy==1.21
 pandas
 notebook
 scikit-learn
@@ -9,3 +9,7 @@ gdown
 pyyaml
 matplotlib
 python-dotenv
+torch
+onnxruntime
+onnx
+shap

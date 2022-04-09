@@ -15,3 +15,4 @@ def load_yaml(filepath: str) -> dict:
     with open(filepath, "r", encoding="utf-8") as yaml_file:
         configuration = yaml.safe_load(yaml_file)
     return configuration
+
