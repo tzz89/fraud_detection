@@ -31,15 +31,16 @@ It seems like there are some cluster in the top left corner of the scatter plot 
 <img src="assets/PCA.png">
 
 ### UMAP
-For UMAP, it seems like there are no noticeable clusters. Another important observation that was made is the UMAP took a very long time to run
+For UMAP, it seems like there are no noticeable clusters. Another important observation that was made is the UMAP took a very long time to run <br>
+
 <img src="assets/UMAP.png">
 
 ### Improvements
 I could have down sample the majority class to count that is similar to the number of fraud cases so clusters are that are form may be more apparent.
 
 ## Golden test set creation
-Before any further processing, the golden test set is first taken out so we can compare the performance of different models
-<img src="assets/train_golden_set.JPG">
+Before any further processing, the golden test set is first taken out so we can compare the performance of different models<br>
+<img src="assets/train_golden_set.JPG"><br>
 <img src="assets/train_test_split.JPG">
 
 
@@ -51,11 +52,11 @@ The model training was done using Non Neutral-network approach as well as Neutra
 - Saving of best model based on cross validation score
 - Using of Sklearn pipeline to group Normalization(Robust Scaler) with model
 - experiment tracking using Weights and bias
-#### results
+#### Results
 The below image shows the average cross validation score for each type of model
-<img src="assets/best_model_scores.png">
+<img src="assets/Best_model_scores.png">
 
-#### experiment tracking
+#### Experiment Tracking
 All the experiments are tracked using weights and bias so we can review the experiments later
 <img src="assets/Logging_to_weights_bias.JPG">
 
@@ -67,8 +68,8 @@ https://colab.research.google.com/drive/1f2ITJBrrAdgBOlJllKsWzYsBXjeDLbvP?usp=sh
 - FP 16 training uing grad scaler
 - 5 fold cross validation
 
-#### results
-The below image shows the training result and the use of tensorboard
+#### Results
+The below image shows the training result and the use of tensorboard<br>
 <img src="assets/deep_learning_metrics.JPG">
 <img src="assets/tensorboard.JPG">
 
@@ -107,8 +108,8 @@ model = FraudModel(args.n_features)
 ```
 
 ### Improvements
-Research and practice on how to convert tensorflow/pytorch model into tensorRT format
-TensorRT 8.2 contains new module Torch-TensorRT, TensorFlow-TensorRT for direct conversion however, operator avaliablity still remains a challenge
+Research and practice on how to convert tensorflow/pytorch model into tensorRT format<br>
+TensorRT 8.2 contains new module Torch-TensorRT, TensorFlow-TensorRT for direct conversion however, operator avaliablity still remains a challenge<br>
 source: https://developer.nvidia.com/blog/nvidia-announces-tensorrt-8-2-and-integrations-with-pytorch-and-tensorflow/
 
 
@@ -117,7 +118,7 @@ As the prediction from fraud detection model will go to a case management team. 
 
 ### Fraud sample
 We can see from below image that feature 14 is the main reason for the fraud prediction
-<img src="assets/shap_positive_case.JPG">
+<img src="assets/shap_postive_case.JPG">
 
 ### Non-Fraud sample
 We can see from below image that feature 14 is also the main reason for that sample not being a fraud case
