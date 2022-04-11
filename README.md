@@ -11,7 +11,7 @@ Below are the major steps in this project
 8. Explainability using SHAP
 
 ## Dataset
-The dataset have been taken from kaggle https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+The dataset have been taken from kaggle https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud <br>
 In total, there are 30 features and approximately 28k transaction and 500 fraud cases. The features are not the real features but a preprocessed feature using PCA
 
 ## EDA
@@ -54,7 +54,7 @@ The model training was done using Non Neutral-network approach as well as Neutra
 - experiment tracking using Weights and bias
 #### Results
 The below image shows the average cross validation score for each type of model
-<img src="assets/Best_model_scores.png">
+<img src="assets/Best_model_scores.JPG">
 
 #### Experiment Tracking
 All the experiments are tracked using weights and bias so we can review the experiments later
