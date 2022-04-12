@@ -46,6 +46,14 @@ Before any further processing, the golden test set is first taken out so we can 
 
 ## Model training
 The model training was done using Non Neutral-network approach as well as Neutral-network approach
+
+### Important Lightgbm tuning parameters
+1. num_leaves 
+2. max_depth
+3. learning_rate
+4. n_estimators
+5. min_split_gain
+6. reg_alpha(L1)/reg_lambda(L2)
 ### Sklearn/Lightgbm
 - Configurable trainer using yaml.
 - GridSearch and CrossValidation
@@ -130,3 +138,45 @@ There are many improvements that can be done in this project
 2. Feature enrichment using polynomial features and feature crosses
 3. Incorporating GNN features (user embeddings)
 4. Perform better clustering and create different models for different clusters (eg new users/long time users)
+5. Converting GridSearch to automatic tuning like optuna
+
+## Sample system design
+The below shows a simple fraud detection system design. As I am still learning about machine learning system. The below diagram will many improvements. 
+<img src="assets/fraud_system.svg">
+
+## Book Summary
+### Practical Fraud prevention Fraud and AML Analyitic for Fintech and ecommerce
+
+#### Chapter 1 Fraudster Traits
+- End of the day, we dont care about "what" but "who" are the fraudster
+- Think from the point of view of the fraudster and the victim
+
+##### Types of fraud/abuse for ecommerce
+1. Fraudster can "hack" into existing account and use the account to make unauthorized purchase
+2. Fraudster can create new account to perform the fraudulent act
+3. Fraudster can use their own account for the fraudulent act
+4. Promo abuse / return policy abuse
+5. Fake reviews (reduce customer trust)
+6. Click Farms/Fraud (Causes ranking to go up)
+
+##### Types of fraud/abuse for Fintechs/Banks
+1. Money laundering
+2. Fake identity during account creation (KYC)
+
+- Shipping address is difficult to impersonate but with the option of collection point option, this will open up some fraud vulnerabilities.
+- In Countries like USA and canada, they have Address verification service(AVS) to match the shipping and the billing address but they only match the numbers. In Singapore, we try to match the shipping and billing address.
+- Fraudsters or fraud rings typically produce the same type of fraud over and over again until they are interupted
+- The number of fraud will increase in different type of the year (like festive season and campaign periods)
+- Create multiple models for different situation (non festive season model , campaign model, festive season model)
+
+## Features for fraud detection
+1. is_billing_shipping_address_match
+2. browser_used (chrome, opera, explorer, Tor)
+3. browser_language
+4. browser_user_agent
+4. is_device_id_match_to_historical_record # mobile app
+5. client_ip_information (proxies, vpn, maskings)
+6. email_address_pattern (numbers only, need to take into account different country culture)
+7. number_of_reviews_written
+8. number_clicks(excessive clicks for click fraud)
+9. click_rates
