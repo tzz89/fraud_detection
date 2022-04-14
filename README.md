@@ -24,6 +24,30 @@ As expected, the dataset is highly imbalanced (< 1% of transaction are fraud cas
 For this dataset, it seems like there are no apparent trend in the number of fraud cases and fraud amount over time
 <img src="assets/fraud_over_time.png">
 
+
+### Correlation plot
+In order to see the correlation between the features as well as the target, we can use the correlation plot. The purpose of this exercise is to see if there are highly correlated features that can be removed or features that are have high correlation to the target so we can future enrich these features
+#### correlation plot
+<img src="assets/coreelation_plot.png">
+
+#### correlation heatmap
+Surprising, alot of the features are correlated to time and amount
+<img src="assets/coreelation_plot.png">
+
+#### correlated features
+2 pairs of features are found to be highly correlated but since the features are anonymized, it can be hard to verify the correlation
+##### Feature V6 and V5
+<img src="assets/v6_v5.JPG">
+
+##### Feature V10 and V9
+<img src="assets/v6_v5.JPG">
+
+#### Outliers
+We are able to identify some outliers from the scatter plots
+##### Sample outlier
+<img src="assets/outlier_v5.JPG">
+
+
 ## Dimensionality reduction and visualization
 As part of the EDA, I wanted to investigate if there are any clusters. 
 ### PCA
@@ -145,7 +169,7 @@ The below shows a simple fraud detection system design. As I am still learning a
 <img src="assets/fraud_system.svg">
 
 ## Book Summary
-### Practical Fraud prevention Fraud and AML Analyitic for Fintech and ecommerce
+### BOOK 1 Practical Fraud prevention Fraud and AML Analyitic for Fintech and ecommerce
 
 #### Chapter 1 Fraudster Traits
 - End of the day, we dont care about "what" but "who" are the fraudster
@@ -158,9 +182,12 @@ The below shows a simple fraud detection system design. As I am still learning a
 4. Promo abuse / return policy abuse
 5. Fake reviews (reduce customer trust)
 6. Click Farms/Fraud (Causes ranking to go up)
+7. Money laundering (Seller and buyer are the same person)
+8. Fraud merchants
+9. merchant collusions
 
 ##### Types of fraud/abuse for Fintechs/Banks
-1. Money laundering
+1. Money laundering (AML)
 2. Fake identity during account creation (KYC)
 
 - Shipping address is difficult to impersonate but with the option of collection point option, this will open up some fraud vulnerabilities.
@@ -168,6 +195,126 @@ The below shows a simple fraud detection system design. As I am still learning a
 - Fraudsters or fraud rings typically produce the same type of fraud over and over again until they are interupted
 - The number of fraud will increase in different type of the year (like festive season and campaign periods)
 - Create multiple models for different situation (non festive season model , campaign model, festive season model)
+
+
+#### Chapter 2 Type of Fraudsters
+1. Amateur Fraudster
+    - Can have advantage of local knowledge
+    - Simple rules is usually enough to catch this group of fraudsters 
+2. Cookie-Cutter Fraudster
+    - Brute force attackers using scripts
+    - Detect them from the speed of attack
+3. Gig economy fraudster
+    - usually used as mules
+4. Psychological Fraudster
+    - Scams elderly or young naive people or romatic scam
+    - The same pattern are usually repeated
+5. Product Savvy Fraudster
+    - abuses return and refund policies.
+    - coupon abuses, refund scams, stolen loyalty point 
+6. Tech Savvy Fraudster
+    - Bot generator
+    - Hackers
+7. Organized Crime Fraudster
+8. Friendly Fraudster
+    - uses own account and card and submit chargeback
+    - buyer's remorse
+
+#### Chapter 3 Fundamental of Fraud Analysis
+- Think like a fraudster
+- Account vs transaction fraud
+- Need a balance between customer satisfaction and fraud blocking
+- Number of frauds go up when the economy is bad or during campaigns
+
+
+#### Chapter 4 Fraud prevention System
+- Rules engines
+- Machine Learning (downside its like a black box)
+- Data Enrichment tools
+- Declined list (lagged data)
+- Identity verification
+- Story based approach (narrow domain like buying using hotel/airport wifi etc)
+
+##### Third party services
+- outseer
+- SEON Fraud Prevention
+- identiq (providerless)
+
+##### Measuring loss and impact
+1. Chargeback rate (Cost of fraud is about 3 times the fraud amount due to logistical efforts etc)
+2. Chargeback dispute rate
+3. Number of unique address for each coupons (account creation abuse)
+4. False Positives (affects customer satisfaction)
+5. True Positives (Blocked transaction - False Positives)
+6. Fraud rate (True Positive/Total Transaction) in count and dollar cost
+7. Block rate (Blocked transaction/Total Transaction) in count and dollar cost
+8. Manual review rate
+
+#### Machine Learning and Fraud modeling
+1. Train machine learning model that focuses on holiday/flash sale time frame
+2. Mix unsupervised and supervised learning models
+3. Explainability, ethics and bias
+4. For new markets, the company might be more toleratable for fraud to keep a high user satistfaction
+
+#### Fraud labelling
+1. Fraud analyst often have to do some clever cherry-picking on fraud case that is likely to repeat itself in the future
+
+
+### Ecommerce Fraud
+1. Stolen card fraud
+2. Address manipulation and mules
+3. BORIS and BOPIS Fraud
+4. Digital Goods and cryptocurrency fraud
+5. First party fraud (friendly fraud)
+
+
+#### Stolen card fraud
+- Fraudster gain access to name, card number, expiry and cvv
+- Credit card information + matching VPN + matching aged and spoofed email is often sold on the dark web
+- Fraudster will use a clean device that has no cookies
+- They will set their device to match the profile of the cardholder
+- IP and geo location masking
+- Query multiple IP geo service provider to cross check
+##### How to stop it
+- Mismatched IP (too crude to be use alone due to accuracies)
+- Repeat offender IP (many people might share the same ip and some ISP recycles ip address)
+- Nonunique IP
+- Masked IP (not all VPN are frauds)
+- GeoIP (GeoIP2 Databases)
+
+#### Address Manipulation
+- The fraudster will be trying to pretend to be the real person or someone the real person know
+- Porch piracy (Fraudster use their own phone number so they are updated on the delivery or call couriers to change address)
+- Send item to public address (barber shops)  or reshipper 
+- mule address
+- Fake drop shipper (take inorder from his own customer and use stolen credit card to buy)
+
+##### How to stop it
+- AVS (us and canada)
+- match billing address and shipping address
+- ban reshippers
+
+#### Buy Online, Pick up in Store and Buy Online, return In store program
+- This method help the fraudster by pass the address issue
+- Fraudster are also using mules for returns to monetize the product
+- Not very common (maybe the fraudster are afraid to be captured by cctv)
+
+##### How to stop it
+- returns will be credited to original account
+- identity verification at collection
+
+
+#### Refund Fraud (friendly fraud)
+- Friendly fraud is very different from the other types of fraud as the fraudster use their own identity.
+- submit a chargeback
+- claims that item was not received
+- some are genuine mistake (bank statement company name different from the online name)
+- family fraud
+- Buyer's remorse
+- Customer resentment
+##### How to stop it
+- proof of delivery
+- identify serial offenders
 
 ## Features for fraud detection
 1. is_billing_shipping_address_match
@@ -180,3 +327,15 @@ The below shows a simple fraud detection system design. As I am still learning a
 7. number_of_reviews_written
 8. number_clicks(excessive clicks for click fraud)
 9. click_rates
+10. any_entries that look like sql (sql injection)
+11. Time_of_purchase (people seldom buy thing at 3.15am)
+12. Time since last transaction
+13. purchased_item_sale_volume (fraudster want to hide themselves)
+14. age_of_account (some aged account are create and sold together with credit card information)
+15. current_session_ip_against_previous_session_ip
+16. IP_geolocation (is_hotel, is_university, is_military_base, anonymous_proxy)
+17. os_used
+
+### BOOK 2 Fraud analytics using descriptive, predictive and social network techniques
+
+
