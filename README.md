@@ -28,11 +28,11 @@ For this dataset, it seems like there are no apparent trend in the number of fra
 ### Correlation plot
 In order to see the correlation between the features as well as the target, we can use the correlation plot. The purpose of this exercise is to see if there are highly correlated features that can be removed or features that are have high correlation to the target so we can future enrich these features
 #### correlation plot
-<img src="assets/coreelation_plot.png">
+<img src="assets/correlation_plot.png">
 
 #### correlation heatmap
 Surprising, alot of the features are correlated to time and amount
-<img src="assets/coreelation_plot.png">
+<img src="assets/correlation_heatmap.png">
 
 #### correlated features
 2 pairs of features are found to be highly correlated but since the features are anonymized, it can be hard to verify the correlation
