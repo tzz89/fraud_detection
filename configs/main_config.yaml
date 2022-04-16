@@ -28,6 +28,37 @@ models:
     penalty: ['l2']
     C: [0.8,1.0,1.2]
     fit_intercept: [True, False]
+
+optuna:
+  n_trials: 25
+
+production_model:
+  LGBMClassifier:
+    n_estimators: 
+      type: "int"
+      low: 1400
+      high: 2300
+    learning_rate: 
+      type: "uniform"
+      low: 0.0001
+      high: 0.025
+    # max_depth: 
+    #   type: "int"
+    #   low: 5
+    #   high: 17
+    min_split_gain : 
+      type: "uniform"
+      low: 0.0001
+      high: 0.07
+    objective: 
+      type: "category"
+      choices: ["binary"]
+    metric: 
+      type: "category"
+      choices: ['average_precision']
+    is_unbalance: 
+      type: "category"
+      choices: [True]
   
 
 metrics:

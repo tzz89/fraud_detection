@@ -14,3 +14,4 @@ onnxruntime
 onnx
 shap
 seaborn
+optuna

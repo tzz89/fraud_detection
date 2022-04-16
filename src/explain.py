@@ -30,7 +30,7 @@ def get_prediction(shap_predictor, sample_features, feature, nsamples=200):
         nsamples (int, optional): number of iterations to perform. Defaults to 200.
 
     Returns:
-        _type_: plot of the shapy values
+        _type_: plot of the shapy values 
     """
     explainer = shap.KernelExplainer(shap_predictor, sample_features)
     shap_values = explainer.shap_values(feature, nsamples=nsamples, normalize=False)

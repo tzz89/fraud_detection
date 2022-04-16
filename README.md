@@ -162,10 +162,14 @@ There are many improvements that can be done in this project
 2. Feature enrichment using polynomial features and feature crosses
 3. Incorporating GNN features (user embeddings)
 4. Perform better clustering and create different models for different clusters (eg new users/long time users)
-5. Converting GridSearch to automatic tuning like optuna
+5. Converting GridSearch to automatic tuning like optuna (Completed)
+<img src="assets/lightgbm_sweep.svg">
 
 ## Sample system design
-The below shows a simple fraud detection system design. As I am still learning about machine learning system. The below diagram will many improvements. 
+The below shows a simple fraud detection system design. As I am still learning about machine learning system. The below diagram will many improvements.\
+For scaling of the serving servers on GPU. We can use Triton (dynamic batching) on MIG(A100), kubernetes, ngix plus load balancer\
+https://developer.nvidia.com/blog/deploying-nvidia-triton-at-scale-with-mig-and-kubernetes/
+
 <img src="assets/fraud_system.svg">
 
 ## Book Summary

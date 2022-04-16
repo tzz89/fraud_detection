@@ -22,6 +22,7 @@ import numpy as np
 import joblib
 import pandas as pd
 import wandb
+import optuna
 from .utils import load_yaml
 
 
@@ -235,3 +236,127 @@ def trainer(
     best_model_metrics_df = pd.DataFrame(best_model_metrics)
     best_model_metrics_df.to_csv(os.path.join(metadata_dir, "best_model_metrics.csv"))
     return best_model_metrics_df
+
+
+def optuna_objective(trial, config, model_name, X, y):
+    """Trials for optuna optimization"""
+
+    # generating the parameters
+    suggested_params = {}
+    for param_name, parameter in config['production_model'][model_name].items():
+        if parameter["type"] == "int":
+            suggested_params[param_name] = trial.suggest_int(param_name, parameter['low'],parameter['high'])
+        elif parameter["type"] == "uniform":
+            suggested_params[param_name] = trial.suggest_uniform(param_name, parameter['low'],parameter['high'])
+        else:
+            suggested_params[param_name] = trial.suggest_categorical(param_name, parameter['choices'])
+
+
+    wandb.init(project=config["wandb_params"]["project_name"],
+               entity=config["wandb_params"]["entity"])
+
+    pipeline = create_pipeline(model_name, suggested_params)
+
+    cv_scores = cross_validate(
+                pipeline,
+                X,
+                y,
+                scoring=config["metrics"]["tracking_metrics"],
+                cv=config["training_params"]["n_folds"],
+                n_jobs=config["training_params"]["n_jobs"],
+                return_train_score=True,
+            )
+
+    average_cv_scores = {k: np.mean(v) for k, v in cv_scores.items()}
+    optimizing_metric_score = average_cv_scores[
+                config["metrics"]["optimizing_metric"]
+            ]
+
+     # logging to weights and biass
+    wandb_cv_logs = {
+        "model_name": model_name,
+        "on_golden_test": False,
+        **suggested_params,
+        **average_cv_scores,
+    }
+    wandb.log(wandb_cv_logs)
+
+    return optimizing_metric_score
+
+def production_trainer(
+    model_name,
+    config_fp="configs/main_config.yaml",
+    train_data_fp="data/train.csv",
+    golden_data_fp="data/golden.csv",
+    saved_model_dir="models",
+    metadata_dir="metadata",
+):
+    """This function will train a single model using optuna auto hyperparameter tuning
+
+    Args:
+        model_name(str): model to train
+        config_fp (str, optional): _description_. Defaults to "configs/main_config.yaml".
+        train_data_fp (str, optional): _description_. Defaults to "data/train.csv".
+        golden_data_fp (str, optional): _description_. Defaults to "data/golden.csv".
+        saved_model_dir (str, optional): _description_. Defaults to "models".
+        metadata_dir (str, optional): _description_. Defaults to "metadata".
+    """
+    # loading config and sercrets
+    config = load_yaml(config_fp)
+    load_dotenv()
+
+    # loading in training data and golden data
+    train_df = pd.read_csv(train_data_fp)
+    X = train_df.drop("Class", axis=1).astype(np.float32)
+    y = train_df["Class"]
+
+    golden_df = pd.read_csv(golden_data_fp)
+    X_test = golden_df.drop("Class", axis=1).astype(np.float32)
+    y_test = golden_df["Class"]
+
+    print(f"\nPerforming training on model {model_name}")
+    
+    objective_func = lambda trials: optuna_objective(trials, config, model_name, X, y)
+
+    # using optuna for automatic hyperparameter tuning
+    study = optuna.create_study(direction='maximize')
+    study.optimize(objective_func ,n_trials=config["optuna"]["n_trials"])
+
+    # train best params with full training data
+    best_pipeline = create_pipeline(model_name, study.best_params)
+    best_pipeline.fit(X, y)
+
+    # saving model
+    joblib.dump(
+        best_pipeline, os.path.join(saved_model_dir, f"{model_name}_best_optuna.pkl")
+    )
+
+    # test best_model on golden test set
+    train_y_proba = best_pipeline.predict_proba(X)
+    test_y_proba = best_pipeline.predict_proba(X_test)
+
+    # calculates training and test scores
+    train_metrics = calulate_metrics(
+        y, train_y_proba, config["metrics"]["tracking_metrics"], is_test=False
+    )
+    test_metrics = calulate_metrics(
+        y_test, test_y_proba, config["metrics"]["tracking_metrics"], is_test=True
+    )
+
+    wandb_best_logs = {
+        "model_name": model_name,
+        "on_golden_test": True,
+        **study.best_params,
+        **train_metrics,
+        **test_metrics,
+    }
+
+    wandb.log(wandb_best_logs)
+    wandb.finish()
+
+    # save best_model metrics
+    full_metrics = {**train_metrics, **test_metrics}
+    full_metrics_series = pd.Series(full_metrics)
+    full_metrics_series.to_csv(os.path.join(metadata_dir, "best_model_metrics_optuna.csv"))
+
+    return full_metrics

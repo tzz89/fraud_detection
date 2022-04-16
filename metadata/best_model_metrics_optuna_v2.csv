@@ -1,0 +1,13 @@
+,0
+train_average_precision,1.0
+train_f1,1.0
+train_precision,1.0
+train_recall,1.0
+train_roc_auc,1.0
+train_accuracy,1.0
+test_average_precision,0.8574910455567136
+test_f1,0.8652482269503546
+test_precision,0.9104477611940298
+test_recall,0.8243243243243243
+test_roc_auc,0.9739758399367291
+test_accuracy,0.9995552642666542
