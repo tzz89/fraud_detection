@@ -28,7 +28,7 @@ For this dataset, it seems like there are no apparent trend in the number of fra
 ### Correlation plot
 In order to see the correlation between the features as well as the target, we can use the correlation plot. The purpose of this exercise is to see if there are highly correlated features that can be removed or features that are have high correlation to the target so we can future enrich these features
 #### correlation plot
-<img src="assets/correlation_plot.png">
+<img src="assets/correlation_matrix.png">
 
 #### correlation heatmap
 Surprising, alot of the features are correlated to time and amount
@@ -45,7 +45,8 @@ Surprising, alot of the features are correlated to time and amount
 #### Outliers
 We are able to identify some outliers from the scatter plots
 ##### Sample outlier
-<img src="assets/outlier_v5.JPG">
+We can see that some fraudulent cases are also outliers, we can put in some rules for those points
+<img src="assets/outliers.JPG">
 
 
 ## Dimensionality reduction and visualization
@@ -105,9 +106,12 @@ The below image shows the training result and the use of tensorboard<br>
 <img src="assets/deep_learning_metrics.JPG">
 <img src="assets/tensorboard.JPG">
 
-### LightGBM vs Deep learning PR curve
+### LightGBM vs Deep learning vs ensembled PR curve 
 The below image shows the PR curve comparison between deep learning and Lightgbm
 <img src="assets/PR_cure_nn_lgbm.png">
+
+The below image shows the PR curve comparison between deep learning, Lightgbm and ensembled
+<img src="assets/ensembled_pr_curve.png">
 
 ## Exporting to onnx
 ```python
