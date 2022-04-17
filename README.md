@@ -325,21 +325,73 @@ https://developer.nvidia.com/blog/deploying-nvidia-triton-at-scale-with-mig-and-
 2. browser_used (chrome, opera, explorer, Tor)
 3. browser_language
 4. browser_user_agent
-4. is_device_id_match_to_historical_record # mobile app
-5. client_ip_information (proxies, vpn, maskings)
-6. email_address_pattern (numbers only, need to take into account different country culture)
-7. number_of_reviews_written
-8. number_clicks(excessive clicks for click fraud)
-9. click_rates
-10. any_entries that look like sql (sql injection)
-11. Time_of_purchase (people seldom buy thing at 3.15am)
-12. Time since last transaction
-13. purchased_item_sale_volume (fraudster want to hide themselves)
-14. age_of_account (some aged account are create and sold together with credit card information)
-15. current_session_ip_against_previous_session_ip
-16. IP_geolocation (is_hotel, is_university, is_military_base, anonymous_proxy)
-17. os_used
+5. is_device_id_match_to_historical_record # mobile app
+6. client_ip_information (proxies, vpn, maskings)
+7. email_address_pattern (numbers only, need to take into account different country culture)
+8. number_of_reviews_written during past day, week, month
+9. number_clicks(excessive clicks for click fraud)
+10. click_rates
+11. any_entries that look like sql (sql injection)
+12. Time_of_purchase (people seldom buy thing at 3.15am)
+13. Time since last transaction, number of transaction during past day, week, month
+14. purchased_item_sale_volume (fraudster want to hide themselves)
+15. age_of_account (some aged account are create and sold together with credit card information)
+16. current_session_ip_against_previous_session_ip
+17. IP_geolocation (is_hotel, is_university, is_military_base, anonymous_proxy)
+18. os_used
+19. amount_spent in past day, week month.
+20. min, max, average, median, most recent amount spent
+21. backcharge in past day, week, month
+22. credit_score_from_third_party
+23. country_unemployment_rate (?)
+24. country_inflation_rate (?)
+25. max_number_of_repeated_payment_amount
 
 ### BOOK 2 Fraud analytics using descriptive, predictive and social network techniques
 
+#### Chapter 1 Overview
+- Fraud are uncommon, well considered, imperceptibly concealed, time-evolving and appears in many forms
+- People commit fraud because of the following reasons
+    1. Pressure
+    2. Opportunity
+    3. Rationalization
+- Orgainization lose about 5% of their revenue to fraud each year
+- There are 2 components of fraud managment, fraud detection, fraud prevention
+- Social network analysis can boost the detection from unsupervised and supervised learning
 
+#### Chapter 2 Data collection, sampling and preprocessing
+- Recency, Frequency, Monetary (RFM) is very important aggregation for clustering
+- Frausters will often make a small transaction for testing followed by a large transaction
+
+##### Types of preprocessing
+- Combining (Must be careful in combining tables)
+- Sampling (Must be representative of seasonality)
+- Missing Values
+- Remove outliers
+- Normalization
+- Categorization and binning
+- Weights of  evidences coding (?)
+- RIDIT scoring if categorical variables (?) 
+- PRIDIT analysis (?)
+- Correlation analysis and variable selection
+<img src="assets/correlation_analysis.JPG">
+- Red Flags (small payment followed by large payment or regular some payments)
+- Segmentation
+
+#### Chapter 3 Descriptive Analystics for fraud detection 
+- Often refers to unsupervised learning.
+- Anomaly does not imply fraud and therefore follow up is still required
+- Useful when we do not have annoted data
+- Useful in identifying new fraud cases
+
+##### Techniques
+1. Graphical Outlier detection (OLAP) (?)
+2. Statistical Outlier detection (Anomaly detection) 
+    - Calculating the Z-score
+    - Break point analysis (sudden big change in account)
+    - Peer group Analysis (Accounts are group together in to groups. Signal if the account break away from the current group)
+3. Clustering
+    - Popular set of feature used for clustering is recency, frequency and monetary
+    - Kmeans/DBSCAN 
+
+#### Chapter 4 Predictive Analytics fro fraud detection
